@@ -1,13 +1,28 @@
 from rubikscubennnsolver.RubiksCube444 import RubiksCube444, solved_4x4x4
 from pprint import pprint
 
-def get_cube():
+
+def main():
+    sanity_check()
+
+
+def sanity_check():
     """
-    Get a 4x4 Rubiks Cube.
+    Run a quick sanity check.
+
+    URU'R' = 6 repetitions of sequence, 1 supercycle 
+
+    LU = 105 repetitions of sequence, 15 supercycles of 7 sequences each
     """
-    order = 'URFDLB'
-    cube = RubiksCube444(solved_4x4x4, order)
-    return cube
+    sequences = ["U R U' R'",
+                 "U' L'",
+                 "L U"]
+    results = {}
+
+    for sequence in sequences:
+        results[sequence] = get_cycles(sequence)
+
+    pprint(results)
 
 
 def get_cycles(sequence):
@@ -45,25 +60,14 @@ def get_cycles(sequence):
             return -1 # Tap out
 
 
-
-def sanity_check():
+def get_cube():
     """
-    Run a quick sanity check.
-
-    URU'R' = 6 repetitions of sequence, 1 supercycle 
-
-    LU = 105 repetitions of sequence, 15 supercycles of 7 sequences each
+    Get a 4x4 Rubiks Cube.
     """
-    sequences = ["U R U' R'",
-                 "L U"]
-    results = {}
-
-    for sequence in sequences:
-        results[sequence] = get_cycles(sequence)
-
-    pprint(results)
+    order = 'URFDLB'
+    cube = RubiksCube444(solved_4x4x4, order)
+    return cube
 
 
 if __name__=="__main__":
-    sanity_check()
-
+    main()
