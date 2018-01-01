@@ -19,22 +19,23 @@ def algorithm_m_clean(n):
     to its captain.
 
     This maps each sequence to its U-beginning captain.
+
+    On second thought... this just returns the captains.
     """
     sequence_to_captain = {}
+    captains = []
 
     for perm in algorithm_m(n):
         # before we can get rotations of this permutation,
         # we need to fix get_rotations()
         captain, rotations = get_rotations(perm)
-
-        ## oops. the captains is a list of 3.
-        ## need a way to pick the first one.
+        captains.append(captain)
 
         for rot in rotations:
             if rot not in sequence_to_captain:
                 sequence_to_captain[rot] = captain
 
-    pprint(sequence_to_captain)
+    return captains
 
 
 def algorithm_m(n):

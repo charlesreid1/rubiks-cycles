@@ -8,10 +8,9 @@ def count_cycles():
 
 
 def longer():
-    from perms import algorithm_m
+    from perms import algorithm_m_clean
     results = {}
-    for seq in algorithm_m(3):
-        print(seq)
+    for seq in algorithm_m_clean(4):
         results[seq] = get_cross_cycles(seq)
     pprint(results)
 
