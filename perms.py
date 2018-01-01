@@ -1,22 +1,40 @@
 import re
 import numpy as np
+from pprint import pprint
 
 
 def main():
     #for perm in algorithm_m():
     #    print(perm)
-    test_rotations()
+    algorithm_m_clean(3)
 
 
 def algorithm_m_clean(n):
-    result = {}
+    """
+    Knuth's Algorithm M for permutation generation,
+    cleaned up to remove duplicate rotations.
+
+    This generates the rotations:
+    constructs a map of each sequence
+    to its captain.
+
+    This maps each sequence to its U-beginning captain.
+    """
+    sequence_to_captain = {}
 
     for perm in algorithm_m(n):
         # before we can get rotations of this permutation,
         # we need to fix get_rotations()
-        pass
+        captain, rotations = get_rotations(perm)
 
+        ## oops. the captains is a list of 3.
+        ## need a way to pick the first one.
 
+        for rot in rotations:
+            if rot not in sequence_to_captain:
+                sequence_to_captain[rot] = captain
+
+    pprint(sequence_to_captain)
 
 
 def algorithm_m(n):
@@ -126,6 +144,7 @@ def get_rotations(sequence):
 
     first_move = moves[0]
     first_move_index = cubestart[first_move]
+    base_result = ""
 
     # Now run through all other cube configurations,
     # and map the numbers back to moves.
@@ -133,14 +152,14 @@ def get_rotations(sequence):
     for move in moves:
         move_numbers.append(cubes[first_move_index].index(move[0]))
 
-    for i in range(1,len(cubes)):
+    for i in range(len(cubes)):
         cube = cubes[i]
         xmoves = []
-        for i, move_number in enumerate(move_numbers):
+        for j, move_number in enumerate(move_numbers):
             old_face = cubes[first_move_index][move_number]
             new_face = cube[move_number]
 
-            old_move = moves[i]
+            old_move = moves[j]
             new_move = re.sub(old_face,new_face,old_move)
 
             xmoves.append(new_move)
@@ -149,8 +168,10 @@ def get_rotations(sequence):
         xmove = " ".join(xmoves)
 
         results.add(xmove)
+        if i==0:
+            base_result = xmove
 
-    return results
+    return base_result, list(results)
 
 def test_rotations():
     # Focusing on sequences of length 3 and up
