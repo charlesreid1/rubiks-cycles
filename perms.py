@@ -1,5 +1,53 @@
 from rubikscubennnsolver.RubiksCube444 import RubiksCube444, solved_4x4x4
 import re
+import numpy as np
+
+
+def main():
+    algorithm_m()
+
+
+def algorithm_m():
+    """
+    Knuth's Algorithm M for permutation generation,
+    via AOCP Volume 4 Fascile 2
+    """
+    moves = ['U', 'D', 'B', 'F', 'L', 'R']
+
+    n = 3
+
+    # M1 - Initialize
+    a = np.zeros(n,)
+    m = np.ones(n,)*n
+
+    j = n-1
+
+    nvisits = 0
+    while True:
+
+        # M2 - visit
+        ## print numbered tuple
+        #print(" ".join([ str(int(aj)) for aj in a]))
+        # print move sequence
+        print(" ".join([ moves[int(aj)] for aj in a]))
+        nvisits += 1
+
+        # M3 - prepare to +1
+        j = n-1
+
+        # M4 - carry
+        while( a[j] == m[j]-1):
+            a[j] = 0
+            j = j-1
+        
+        # M5 - increase unless done
+        if(j<0):
+            break
+        else:
+            a[j] = a[j] + 1
+
+    print("Visited %d permutations"%(nvisits))
+
 
 def test_rotations():
     # Focusing on sequences of length 3 and up
@@ -107,4 +155,5 @@ def get_cube():
 
 
 if __name__=="__main__":
-    test_rotations()
+    main()
+
