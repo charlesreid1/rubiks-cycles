@@ -1,20 +1,34 @@
-from rubikscubennnsolver.RubiksCube444 import RubiksCube444, solved_4x4x4
 import re
 import numpy as np
 
 
 def main():
-    algorithm_m()
+    for perm in algorithm_m():
+        print(perm)
 
 
-def algorithm_m():
+def algorithm_m(n):
     """
     Knuth's Algorithm M for permutation generation,
-    via AOCP Volume 4 Fascile 2
-    """
-    moves = ['U', 'D', 'B', 'F', 'L', 'R']
+    via AOCP Volume 4 Fascile 2.
+    This is a generator that returns permtuations 
+    generated using the variable-radix method. 
 
-    n = 3
+    This generates ALL permutations.
+    Many of these are rotations of one another,
+    so use the get_rotations() function
+    below to get all rotations of a given
+    permutation.
+
+    A better way to do this is to clean up 
+    algorithm M so it only generates
+    the original, plus the 24 rotations
+    each in turn... 
+    
+    ...but that makes my brain hurt.
+    """
+    moves = ['U', 'D', 'B', 'F', 'L', 'R',
+             'Uw','Dw','Bw','Fw','Lw','Rw']
 
     # M1 - Initialize
     a = np.zeros(n,)
@@ -29,7 +43,9 @@ def algorithm_m():
         ## print numbered tuple
         #print(" ".join([ str(int(aj)) for aj in a]))
         # print move sequence
-        print(" ".join([ moves[int(aj)] for aj in a]))
+        move_sequence = " ".join([ moves[int(aj)] for aj in a])
+        yield move_sequence 
+
         nvisits += 1
 
         # M3 - prepare to +1
@@ -45,33 +61,6 @@ def algorithm_m():
             break
         else:
             a[j] = a[j] + 1
-
-    print("Visited %d permutations"%(nvisits))
-
-
-def test_rotations():
-    # Focusing on sequences of length 3 and up
-    # Focusing on right hand sequences only
-    # 
-    # 12 possible right hand moves,
-    # 3^12 total possibilities,
-    # 24 rotational equivalents, 
-    # 22,000 total unique 3-move sequences
-    
-    moves = ['U', 'D', 'B', 'F', 'L', 'R',
-             'Uw','Dw','Bw','Fw','Lw','Rw']
-
-    sequences = []
-    move1 = 'U'
-    for move2 in ['D']:#moves:
-        for move3 in ['Uw']:#moves:
-            seq = " ".join([move1,move2,move3])
-            sequences.append(seq)
-
-    print("Length of sequence: %d"%(len(sequences)))
-
-    for sequence in sequences:
-        print(get_rotations(sequence))
 
 
 def get_rotations(sequence):
@@ -106,11 +95,6 @@ def get_rotations(sequence):
 
     results = set()
 
-    ### print("For new cube config:")
-    ### print(cubes[0])
-    ### print("Original move sequence is:")
-    ### print(sequence)
-
     results.add(sequence)
 
     # Here we assume first move is a U.
@@ -139,19 +123,34 @@ def get_rotations(sequence):
         # Assemble the moves to a string
         xmove = " ".join(xmoves)
 
-        ### print("For new cube config:")
-        ### print(cube)
-        ### print("New move sequence is:")
-        ### print(xmove)
-
         results.add(xmove)
 
     return results
 
+def test_rotations():
+    # Focusing on sequences of length 3 and up
+    # Focusing on right hand sequences only
+    # 
+    # 12 possible right hand moves,
+    # 3^12 total possibilities,
+    # 24 rotational equivalents, 
+    # 22,000 total unique 3-move sequences
+    
+    moves = ['U', 'D', 'B', 'F', 'L', 'R',
+             'Uw','Dw','Bw','Fw','Lw','Rw']
 
-def get_cube():
-    cube = RubiksCube444(solved_4x4x4,'URFDLB')
-    return cube
+    sequences = []
+    move1 = 'U'
+    for move2 in ['D']:#moves:
+        for move3 in ['Uw']:#moves:
+            seq = " ".join([move1,move2,move3])
+            sequences.append(seq)
+
+    print("Length of sequence: %d"%(len(sequences)))
+
+    for sequence in sequences:
+        print(get_rotations(sequence))
+
 
 
 if __name__=="__main__":
