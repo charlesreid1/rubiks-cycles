@@ -63,7 +63,7 @@ def algorithm_m(n):
 
     # M1 - Initialize
     a = np.zeros(n,)
-    m = np.ones(n,)*n
+    m = np.ones(n,)*len(moves)
 
     j = n-1
 
@@ -71,9 +71,6 @@ def algorithm_m(n):
     while True:
 
         # M2 - visit
-        ## print numbered tuple
-        #print(" ".join([ str(int(aj)) for aj in a]))
-        # print move sequence
         move_sequence = " ".join([ moves[int(aj)] for aj in a])
         yield move_sequence 
 
