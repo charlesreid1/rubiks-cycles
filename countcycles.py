@@ -1,19 +1,28 @@
 from rubikscubennnsolver.RubiksCube444 import RubiksCube444, solved_4x4x4
 from pprint import pprint
-
+import json
 
 def count_cycles():
-    longer()
+    sequence_test(2)
+    print("Done with sequences of length 2")
+    sequence_test(3)
+    print("Done with sequences of length 3")
 
 
 
-def longer():
+def sequence_test(n):
+
     from perms import algorithm_m_clean
     results = {}
-    for seq in algorithm_m_clean(4):
+    for seq in algorithm_m_clean(n):
         results[seq] = get_cross_cycles(seq)
-    pprint(results)
 
+    # results dictionary:
+    # keys are N-move sequences
+    # values are number of repeat cycles/supercycles
+    filename = "sequence%d.json"%(n)
+    with open(filename,'w') as f:
+        json.dump(results, f, indent=4, sort_keys=True)
 
 
 def sanity_check():
@@ -38,6 +47,7 @@ def sanity_check():
         results[sequence] = get_cross_cycles(sequence)
 
     pprint(results)
+
 
 
 def get_cycles(sequence):
@@ -74,7 +84,6 @@ def get_cycles(sequence):
 
 
 
-
 def get_center_cycles(sequence):
     """
     Given a 4x4 cube and a move sequence,
@@ -108,9 +117,6 @@ def get_center_cycles(sequence):
 
         if(centercyclecount>maxcount):
             return (-1,-1) # Tap out
-
-
-
 
 
 
@@ -162,6 +168,7 @@ def get_cube():
     order = 'URFDLB'
     cube = RubiksCube444(solved_4x4x4, order)
     return cube
+
 
 
 if __name__=="__main__":

@@ -4,9 +4,7 @@ from pprint import pprint
 
 
 def main():
-    #for perm in algorithm_m():
-    #    print(perm)
-    algorithm_m_clean(3)
+    pprint(algorithm_m_clean(3))
 
 
 def algorithm_m_clean(n):
@@ -23,19 +21,19 @@ def algorithm_m_clean(n):
     On second thought... this just returns the captains.
     """
     sequence_to_captain = {}
-    captains = []
+    captains = set()
 
     for perm in algorithm_m(n):
         # before we can get rotations of this permutation,
         # we need to fix get_rotations()
         captain, rotations = get_rotations(perm)
-        captains.append(captain)
+        captains.add(captain)
 
         for rot in rotations:
             if rot not in sequence_to_captain:
                 sequence_to_captain[rot] = captain
 
-    return captains
+    return list(captains)
 
 
 def algorithm_m(n):
@@ -140,7 +138,7 @@ def get_rotations(sequence):
     # moves to numbers.
     moves = sequence.split(" ")
 
-    first_move = moves[0]
+    first_move = moves[0][0]
     first_move_index = cubestart[first_move]
     base_result = ""
 
