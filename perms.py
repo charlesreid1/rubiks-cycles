@@ -3,8 +3,20 @@ import numpy as np
 
 
 def main():
-    for perm in algorithm_m():
-        print(perm)
+    #for perm in algorithm_m():
+    #    print(perm)
+    test_rotations()
+
+
+def algorithm_m_clean(n):
+    result = {}
+
+    for perm in algorithm_m(n):
+        # before we can get rotations of this permutation,
+        # we need to fix get_rotations()
+        pass
+
+
 
 
 def algorithm_m(n):
@@ -67,6 +79,9 @@ def get_rotations(sequence):
     """
     Given a cube sequence,
     find all 24 rotations of it.
+
+    Need to fix this so it doesn't
+    necessarily expect the U-first case.
     """
     cubes = ["UBFLRD",
              "UFBRLD",
