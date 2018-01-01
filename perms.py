@@ -112,22 +112,32 @@ def get_rotations(sequence):
 
     results.add(sequence)
 
-    # Here we assume first move is a U.
+    cubestart = {'U': 0,
+                 'D': 4,
+                 'L': 8,
+                 'R':12,
+                 'F':16,
+                 'B':20}
+
     # Split the sequence into its moves,
     # and use the first cube configuration to map
     # moves to numbers.
     moves = sequence.split(" ")
-    move_numbers = []
-    for move in moves:
-        move_numbers.append(cubes[0].index(move[0]))
+
+    first_move = moves[0]
+    first_move_index = cubestart[first_move]
 
     # Now run through all other cube configurations,
     # and map the numbers back to moves.
+    move_numbers = []
+    for move in moves:
+        move_numbers.append(cubes[first_move_index].index(move[0]))
+
     for i in range(1,len(cubes)):
         cube = cubes[i]
         xmoves = []
         for i, move_number in enumerate(move_numbers):
-            old_face = cubes[0][move_number]
+            old_face = cubes[first_move_index][move_number]
             new_face = cube[move_number]
 
             old_move = moves[i]
@@ -155,9 +165,9 @@ def test_rotations():
              'Uw','Dw','Bw','Fw','Lw','Rw']
 
     sequences = []
-    move1 = 'U'
+    move1 = 'L'
     for move2 in ['D']:#moves:
-        for move3 in ['Uw']:#moves:
+        for move3 in ['Rw']:#moves:
             seq = " ".join([move1,move2,move3])
             sequences.append(seq)
 
