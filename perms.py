@@ -4,7 +4,7 @@ from pprint import pprint
 
 
 def main():
-    pprint(algorithm_m_clean(3))
+    r = algorithm_m_clean(2)
 
 
 def algorithm_m_clean(n):
@@ -15,25 +15,30 @@ def algorithm_m_clean(n):
     This generates the rotations:
     constructs a map of each sequence
     to its captain.
-
-    This maps each sequence to its U-beginning captain.
-
-    On second thought... this just returns the captains.
     """
     sequence_to_captain = {}
     captains = set()
 
     for perm in algorithm_m(n):
-        # before we can get rotations of this permutation,
-        # we need to fix get_rotations()
-        captain, rotations = get_rotations(perm)
-        captains.add(captain)
+        # get all possible rotations of this 
+        # move sequence (permutation)
+        rotations = get_rotations(perm)
 
+        # important: 
+        # sort rotations in reverse lexicographic order,
+        # extract captains after they are returned
+        captain = rotations[0]
+
+        # for each rotation,
+        # set its captain.
         for rot in rotations:
             if rot not in sequence_to_captain:
                 sequence_to_captain[rot] = captain
+                captains.add(captain)
 
-    return list(captains)
+    captains = list(captains)
+    return captains, sequence_to_captain
+
 
 
 def algorithm_m(n):
@@ -140,7 +145,6 @@ def get_rotations(sequence):
 
     first_move = moves[0][0]
     first_move_index = cubestart[first_move]
-    base_result = ""
 
     # Now run through all other cube configurations,
     # and map the numbers back to moves.
@@ -164,10 +168,10 @@ def get_rotations(sequence):
         xmove = " ".join(xmoves)
 
         results.add(xmove)
-        if i==0:
-            base_result = xmove
 
-    return base_result, list(results)
+    # reversed is slightly more convenient, 
+    # starts with U instead of B
+    return list(reversed(sorted(list(results))))
 
 def test_rotations():
     # Focusing on sequences of length 3 and up
