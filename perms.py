@@ -4,7 +4,15 @@ from pprint import pprint
 
 
 def main():
-    r = algorithm_m_clean(2)
+    captains, seq2captains = algorithm_m_clean(2)
+
+    print("List of all length-2 permutations generated:")
+    pprint(list(seq2captains.keys()))
+    print("Total: %d"%(len(seq2captains.keys())))
+    print("")
+    print("List of rotationally unique length-2 permutations:")
+    pprint(list(captains))
+    print("Total: %d"%(len(captains)))
 
 
 def algorithm_m_clean(n):
@@ -62,7 +70,8 @@ def algorithm_m(n):
     ...but that makes my brain hurt.
     """
     moves = ['U', 'D', 'B', 'F', 'L', 'R',
-             'Uw','Dw','Bw','Fw','Lw','Rw']
+             'Uw','Dw','Bw','Fw','Lw','Rw',
+             '2U','2D','2B','2F','2L','2R', ]
 
     # M1 - Initialize
     a = np.zeros(n,)
@@ -143,14 +152,22 @@ def get_rotations(sequence):
     # moves to numbers.
     moves = sequence.split(" ")
 
-    first_move = moves[0][0]
+    move0 = moves[0]
+
+    first_move = move0[0]
+    if(move0[0]=='2'):
+        first_move = move0[1]
+
     first_move_index = cubestart[first_move]
 
     # Now run through all other cube configurations,
     # and map the numbers back to moves.
     move_numbers = []
     for move in moves:
-        move_numbers.append(cubes[first_move_index].index(move[0]))
+        if(move[0]=='2'):
+            move_numbers.append(cubes[first_move_index].index(move[1]))
+        else:
+            move_numbers.append(cubes[first_move_index].index(move[0]))
 
     for i in range(len(cubes)):
         cube = cubes[i]
@@ -183,12 +200,13 @@ def test_rotations():
     # 22,000 total unique 3-move sequences
     
     moves = ['U', 'D', 'B', 'F', 'L', 'R',
-             'Uw','Dw','Bw','Fw','Lw','Rw']
+             'Uw','Dw','Bw','Fw','Lw','Rw',
+             '2U','2D','2B','2F','2L','2R', ]
 
     sequences = []
     move1 = 'L'
     for move2 in ['D']:#moves:
-        for move3 in ['Rw']:#moves:
+        for move3 in moves:
             seq = " ".join([move1,move2,move3])
             sequences.append(seq)
 
