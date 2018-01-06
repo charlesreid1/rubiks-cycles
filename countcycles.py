@@ -100,7 +100,17 @@ def get_cycles(sequence):
     while True:
         # Apply this sequence to the cube
         for move in moves:
-            rr.rotate(move)
+
+            if(move[0]=='2'):
+                # need to kludge this to work for second-layer-only moves
+                the_move = move[1]
+                move1 = the_move+'w'
+                move2 = the_move+'\''
+                rr.rotate(move1)
+                rr.rotate(move2)
+            else:
+                # Otherwise just apply the move
+                rr.rotate(move)
 
         # Increment cycle count
         cyclecount += 1
@@ -167,20 +177,30 @@ def get_cross_cycles(sequence):
 
     maxcount = 10000
     while True:
+
         # Apply this sequence to the cube
         for move in moves:
-            rr.rotate(move)
+            if(move[0]=='2'):
+                # need to kludge this to work for second-layer-only moves
+                the_move = move[1]
+                move1 = the_move+'w'
+                move2 = the_move+'\''
+                rr.rotate(move1)
+                rr.rotate(move2)
+            else:
+                # Otherwise just apply the move
+                rr.rotate(move)
 
         # Increment cycle count
         innercyclecount += 1
 
         # Check if center solved
-        if(rr.centers_solved()):
-            centercyclecount += 1
+        if(rr.centers_solved() and centercyclecount==0):
+            centercyclecount = innercyclecount
 
         # Check if crosses solved
-        if(rr.crosses_solved()):
-            crosscyclecount += 1
+        if(rr.crosses_solved() and crosscyclecount==0):
+            crosscyclecount = innercyclecount
 
         # Check if solved
         if(rr.solved()):
