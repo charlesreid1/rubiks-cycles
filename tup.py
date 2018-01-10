@@ -4,6 +4,7 @@ import os, re
 import time
 from sympy.core.numbers import ilcm
 
+
 def get_cube():
     """
     Get a 4x4 Rubiks Cube.
@@ -19,24 +20,23 @@ def main():
     # We need a tuple that treats each of the faces
     # or pieces as separate, independent, but connected
     # units.
-    sequences = ['U R','Uw Rw','U 2R D F']
+
+    # test
+    sequences = ['U U','D D','R R','L L','F F','B B']
+
+    # study
+    sequences = ['U R','R U','Uw Rw','Uw R']
+
     for seq in sequences:
-        factors = factor_rotation(seq)
         print("-"*40)
         print(seq)
-        print("Factor sizes: %s"%(set([len(j) for j in factors])))
+
+        factors = factor_rotation(seq)
+
+        factor_lengths = set([len(j) for j in factors])
+        print("Factor sizes: %s"%(factor_lengths))
         print("Factors: %s"%(factors))
-
-
-def get_face2col():
-    face2col = {}
-    face2col['U'] = 0
-    face2col['D'] = 1
-    face2col['F'] = 2
-    face2col['B'] = 3
-    face2col['R'] = 4
-    face2col['L'] = 5
-    return face2col
+        print("Least common multiple: %d"%( ilcm(*factor_lengths) ))
 
 
 
@@ -46,12 +46,19 @@ def factor_rotation(rot):
     """
     cube0 = list(range(1,96+1))
     cube1 = cube0.copy()
+    cube_prior = cube0.copy()
     r = get_cube()
     sequence = []
-    for move in rot.split(" "):
+
+    # Needed to fix this to use the prior cube,
+    # otherwise multiple move sequences were broken.
+    for c,move in enumerate(rot.split(" ")):
         rotmap = r.rotation_map(move)
         for m in rotmap:
-            cube1[cube0.index(m[0])] = m[1]
+            # shift item at index m[0] to item at index m[1]
+            cube1[cube_prior.index(m[0])] = m[1]
+
+        cube_prior = cube1.copy()
 
     factors = factor_permutation(cube0,cube1)
     return factors
@@ -113,41 +120,6 @@ def factor_permutation(perm_top,perm_bot):
         factorsize.add(len(factor))
         check += len(factor)
     return factors
-
-
-
-
-
-
-def do_rotation(rot):
-
-    face2col = get_face2col()
-
-    print("-"*40)
-    print("Move Sequence: %s"%(rot))
-
-    r = get_cube()
-
-    cube0 = list([face2col[j] for i,j in enumerate(r.state) if(i>0) ])
-
-    for move in rot.split(" "):
-        r.rotate(move)
-
-    cube1 = list([face2col[j] for i,j in enumerate(r.state) if(i>0) ])
-
-    print(cube0)
-    print(cube1)
-    m = []
-    for c0,c1 in zip(cube0,cube1):
-        if(c0==c1):
-            m.append(0)
-        else:
-            m.append(1)
-    print(m)
-    print(sum(m))
-
-
-
 
 
 if __name__=="__main__":
