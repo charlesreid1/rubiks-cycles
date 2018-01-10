@@ -6,10 +6,10 @@ import time
 def count_cycles():
     sequence_test(2)
     print("Done with sequences of length 2")
-    sequence_test(3)
-    print("Done with sequences of length 3")
-    sequence_test(4)
-    print("Done with sequences of length 4")
+    #sequence_test(3)
+    #print("Done with sequences of length 3")
+    #sequence_test(4)
+    #print("Done with sequences of length 4")
 
 
 def sequence_test(n):
@@ -19,7 +19,8 @@ def sequence_test(n):
     results = {}
     results_full = {}
 
-    print("Sequence\t\tNCycles\t\tTime\t\tAverage Time")
+    #print("Sequence\t\tNCycles\t\tTime\t\tAverage Time")
+    print("Sequence\t\tCross Count\tCenter Count\tTotal Count")
 
     tsum = 0
     tc = 1
@@ -31,27 +32,14 @@ def sequence_test(n):
         t1 = time.time()
         tsum += t1-t0
         tc += 1
-        print("%-16s\t\t%-8d\t\t%0.4f\t\t%0.4f"%( seq, ncycles[2], t1-t0, tsum/tc ))
+        #print("%-16s\t%-6d\t\t%0.4f\t\t%0.4f"%( seq, ncycles[2], t1-t0, tsum/tc ))
+        print("%-16s\t%-6d\t\t%-6d\t\t%-6d"%( seq, ncycles[0], ncycles[1], ncycles[2] ))
 
     # results dictionary:
     # keys are N-move sequences
     # values are number of repeat cycles/supercycles
     filename = "sequence%d.json"%(n)
     with open(filename,'w') as f:
-        json.dump(results, f, indent=4)
-
-    # full results dictionary:
-    # iterate through each duplicate rotation,
-    # find its captain, 
-    # and set its cycle count 
-    # to the cycle count of its captain
-    for seq in sequence_to_captain:
-        captain = sequence_to_captain[seq]
-        captain_cyclecount = results[captain]
-        results_full[seq] = captain_cyclecount
-
-    full_filename = "sequence_full%d.json"%(n)
-    with open(full_filename,'w') as f:
         json.dump(results, f, indent=4)
 
 
