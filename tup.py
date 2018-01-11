@@ -21,22 +21,33 @@ def main():
     # or pieces as separate, independent, but connected
     # units.
 
-    # test
-    sequences = ['U U','D D','R R','L L','F F','B B']
+    ## test
+    #sequences = ['U U','D D','R R','L L','F F','B B']
+    #sequences = ['U U U','D D D','R R R','L L L','F F F','B B B']
 
     # study
-    sequences = ['U R','R U','Uw Rw','Uw R']
+    #sequences = ['U R'] # where is this 4 coming from?
+    sequences = ['R U','R D','L B','L F']
+
+    c = get_cube()
+    center_squares = []
+    for side_key in c.sides:
+        side = c.sides[side_key]
+        center_squares.append(set(side.center_pos))
 
     for seq in sequences:
         print("-"*40)
         print(seq)
 
-        factors = factor_rotation(seq)
+        factors_list = factor_rotation(seq)
+        factors_len = set()
+        for factor in factors_list:
+            if(set(factor) not in center_squares):
+                factors_len.add(len(factor))
 
-        factor_lengths = set([len(j) for j in factors])
-        print("Factor sizes: %s"%(factor_lengths))
-        print("Factors: %s"%(factors))
-        print("Least common multiple: %d"%( ilcm(*factor_lengths) ))
+        print("Factor sizes: %s"%(factors_len))
+        print("Factors: %s"%(factors_list))
+        print("Least common multiple: %d"%( ilcm(*factors_len) ))
 
 
 
@@ -48,6 +59,9 @@ def factor_rotation(rot):
     cube1 = cube0.copy()
     cube_prior = cube0.copy()
     r = get_cube()
+
+    r.print_cube_layout()
+
     sequence = []
 
     # Needed to fix this to use the prior cube,
