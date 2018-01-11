@@ -27,7 +27,7 @@ def main():
 
     # study
     #sequences = ['U R'] # where is this 4 coming from?
-    sequences = ['R U','R D','L B','L F']
+    sequences = ['U R']#'R D','L B','L F']
 
     c = get_cube()
     center_squares = []
@@ -46,7 +46,8 @@ def main():
                 factors_len.add(len(factor))
 
         print("Factor sizes: %s"%(factors_len))
-        print("Factors: %s"%(factors_list))
+        print("Factors:")
+        print_factors(factors_list)
         print("Least common multiple: %d"%( ilcm(*factors_len) ))
 
 
@@ -60,8 +61,6 @@ def factor_rotation(rot):
     cube_prior = cube0.copy()
     r = get_cube()
 
-    r.print_cube_layout()
-
     sequence = []
 
     # Needed to fix this to use the prior cube,
@@ -74,6 +73,11 @@ def factor_rotation(rot):
 
         cube_prior = cube1.copy()
 
+    print("\n")
+    print_cube(cube0)
+    print("\n")
+    print_cube(cube1)
+    print("\n")
     factors = factor_permutation(cube0,cube1)
     return factors
 
@@ -134,6 +138,15 @@ def factor_permutation(perm_top,perm_bot):
         factorsize.add(len(factor))
         check += len(factor)
     return factors
+
+
+def print_cube(cube):
+    print("(" + " ".join(str(j) for j in cube) + ")")
+
+
+def print_factors(factors_list):
+    for factor in factors_list:
+        print(factor)
 
 
 if __name__=="__main__":
