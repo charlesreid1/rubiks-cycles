@@ -107,7 +107,6 @@ def factor_permutation(perm_top,perm_bot):
             leader = perm_top[i]
             follower = perm_bot[i]
 
-            # Why is this B?
             i = perm_top.index(follower)
             while(used_vector[i]==1):
                 i += 1
