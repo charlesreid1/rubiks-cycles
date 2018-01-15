@@ -4,22 +4,21 @@ import json
 import time
 
 def count_cycles():
-    sequence_test(2)
-    print("Done with sequences of length 2")
+    #sequence_test(2)
+    #print("Done with sequences of length 2")
     #sequence_test(3)
     #print("Done with sequences of length 3")
-    #sequence_test(4)
-    #print("Done with sequences of length 4")
+    sequence_test(4)
+    print("Done with sequences of length 4")
 
 
 def sequence_test(n):
 
-    from perms import algorithm_m_clean
+    from perms import algorithm_m_clean, get_rotations
 
     results = {}
     results_full = {}
 
-    #print("Sequence\t\tNCycles\t\tTime\t\tAverage Time")
     print("Sequence\t\tCross Count\tCenter Count\tTotal Count")
 
     tsum = 0
@@ -28,12 +27,17 @@ def sequence_test(n):
     for seq in captains:
         t0 = time.time()
         ncycles = get_cross_cycles(seq)
+
         results[seq] = ncycles
+
+        for val in get_rotations(seq):
+            results_full[val] = ncycles
+            print("%-16s\t%-6d\t\t%-6d\t\t%-6d"%( val, ncycles[0], ncycles[1], ncycles[2] ))
+
         t1 = time.time()
         tsum += t1-t0
         tc += 1
-        #print("%-16s\t%-6d\t\t%0.4f\t\t%0.4f"%( seq, ncycles[2], t1-t0, tsum/tc ))
-        print("%-16s\t%-6d\t\t%-6d\t\t%-6d"%( seq, ncycles[0], ncycles[1], ncycles[2] ))
+        #print("%-16s\t%-6d\t\t%-6d\t\t%-6d"%( seq, ncycles[0], ncycles[1], ncycles[2] ))
 
     # results dictionary:
     # keys are N-move sequences
