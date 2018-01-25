@@ -9,7 +9,7 @@ Files:
 * `manual_order.py` - manually apply sequences to cubes
     to determine their order.
 
-* perms.py - provide supporing functions to `manual_order.py` 
+* `perms.py` - provide supporing functions to `manual_order.py` 
     to find rotational permutations of a move sequence.
 
 * `sequence_order.py` - use tuples and tuple factoring
