@@ -2,6 +2,16 @@ import re
 import numpy as np
 from pprint import pprint
 
+"""
+Permutations
+
+Functions for finding rotational permtuations.
+
+This scipt supports countcycles.py
+by finding all rotational permutations
+of a given move sequence to help eliminate 
+duplicates. 
+"""
 
 def main():
     captains, seq2captains = algorithm_m_clean(2)

@@ -3,13 +3,33 @@ from pprint import pprint
 import json
 import time
 
+"""
+Manual Order
+
+Manually determine the order of a move sequence.
+
+This is a caveman-style investigation
+into the order of different cycles.
+
+Given a move sequence, this creates 
+a virtual Rubik's Cube and applies
+the sequence to the cube repeatedly
+until it returns to the solved state.
+
+The smarter way to do this is to
+write the move sequence as a permutation,
+factor the permutation, and find the LCM
+of each independent factor's length.
+This gives the order of the move sequence.
+"""
+
 def count_cycles():
     #sequence_test(2)
     #print("Done with sequences of length 2")
     #sequence_test(3)
     #print("Done with sequences of length 3")
-    sequence_test(4)
-    print("Done with sequences of length 4")
+    #sequence_test(4)
+    #print("Done with sequences of length 4")
 
 
 def sequence_test(n):
@@ -17,7 +37,6 @@ def sequence_test(n):
     from perms import algorithm_m_clean, get_rotations
 
     results = {}
-    results_full = {}
 
     print("Sequence\t\tCross Count\tCenter Count\tTotal Count")
 
@@ -30,14 +49,10 @@ def sequence_test(n):
 
         results[seq] = ncycles
 
-        for val in get_rotations(seq):
-            results_full[val] = ncycles
-            print("%-16s\t%-6d\t\t%-6d\t\t%-6d"%( val, ncycles[0], ncycles[1], ncycles[2] ))
-
         t1 = time.time()
         tsum += t1-t0
         tc += 1
-        #print("%-16s\t%-6d\t\t%-6d\t\t%-6d"%( seq, ncycles[0], ncycles[1], ncycles[2] ))
+        print("%-16s\t%-6d\t\t%-6d\t\t%-6d"%( seq, ncycles[0], ncycles[1], ncycles[2] ))
 
     # results dictionary:
     # keys are N-move sequences
