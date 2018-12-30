@@ -22,6 +22,14 @@ def get_cube():
     cube = RubiksCube444(solved_4x4x4, order)
     return cube
 
+def get_cube():
+    """
+    Get a 4x4 Rubiks Cube.
+    """
+    order = 'URFDLB'
+    cube = RubiksCube444(solved_4x4x4, order)
+    return cube
+
 
 def main():
     # Built in tuple representation has the problem
@@ -30,20 +38,19 @@ def main():
     # or pieces as separate, independent, but connected
     # units.
 
-    ## test
     #sequences = ['U U','D D','R R','L L','F F','B B']
     #sequences = ['U U U','D D D','R R R','L L L','F F F','B B B']
-
-    # study
-    sequences = ['R','U R U\' R\'','U R']
+    #sequences = ["R","U R U' R'","U R"]
     #sequences = ['U','D','L','R','F','B']
     #sequences = ["U R U' R'"] 
+    sequences = ["Uw Rw","U Rw"] 
 
-    c = get_cube()
-    center_squares = []
-    for side_key in c.sides:
-        side = c.sides[side_key]
-        center_squares.append(set(side.center_pos))
+    center_squares = [ 6,  7, 10, 11,
+                      22, 23, 26, 27,
+                      38, 39, 42, 43,
+                      54, 55, 58, 59,
+                      70, 71, 74, 75,
+                      86, 87, 90, 91]
 
     for seq in sequences:
         print("-"*40)
@@ -79,13 +86,6 @@ def factor_rotation(rot):
     # otherwise multiple move sequences were broken.
     for c,move in enumerate(rot.split(" ")):
         rotmap = r.rotation_map(move)
-
-        ### # Print rotation map
-        ### print(">"*40)
-        ### print(move+":")
-        ### print("-"*40)
-        ### pprint(rotmap)
-        ### print("<"*40)
 
         for m in rotmap:
             # shift item at index m[0] to item at index m[1]
@@ -161,7 +161,7 @@ def factor_permutation(perm_top,perm_bot):
 
 def print_cube(cube):
     #print("(" + " ".join("%02d"%(j) for j in cube) + ")")
-    print("(" + " ".join(str(j) for j in cube) + ")")
+    print("(" + " ".join("%02d"%(j) for j in cube) + ")")
 
 
 def print_factors(factors_list):
@@ -173,7 +173,7 @@ def print_factors(factors_list):
         else:
             # Length==1: collect and print together
             ones_list.append(factor[0])
-    print("Independent Pieces: %s"%(ones_list))
+    print("Independent Faces: %s"%(ones_list))
 
 
 if __name__=="__main__":
